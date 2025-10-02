@@ -12,11 +12,12 @@ object PrefsHelper {
     fun saveNotes(context: Context, notes: List<NoteModel>) {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val json = Gson().toJson(notes)
+        prefs.edit().putString(KEY_NOTES, json).apply()
     }
 
     fun loadNotes(context: Context): MutableList<NoteModel> {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val json = ""
+        val json = prefs.getString(KEY_NOTES, null)
         return if (json != null) {
             val type = object : TypeToken<List<NoteModel>>() {}.type
             Gson().fromJson(json, type)
